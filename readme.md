@@ -4,9 +4,19 @@ My first game in Love2d. It's based of section 3 of Richard Allbert's udemy cour
 Learn 2D Game Development: Godot 4.3+ & C# from Scratch.
 
 In progress / todo
+- Rename references to gems to collectibles, to be consistent.
+- Add a "start-state", which is loaded initially, and loaded when the player runs out of lives.
+- Rework loading of graphics. Now a new image is loaded into memory every time a collectible is spawned.
 - Starting working on scoreManager
 
 Versions:
+0.3.2 - Refactoring
+- Refacotered newly spanwed collectibles to have a key / id in the table, instead of an index.
+This makes it easier to delete collectibles from the table, instead of looping over the entire table
+every time a collectible needs to be removed.
+- Added methods in GameManager to add and remove collectibles within the class, instead
+of the collectibles modifying data in GameManager
+
 0.3.1 - Refactoring
 - Made GameManager globel instead of passing it into every instance of gems
 0.3 - Adding GameManager

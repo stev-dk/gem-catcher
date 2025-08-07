@@ -19,6 +19,7 @@ function Collectible:new(o)
     o.sprite = "default.png"
     o.damage = o.damage or 1
     o.image = nil
+    o.gemId = o.gemId or "gem0"
     setmetatable(o, self)
     self.__index = self
     return o
@@ -33,16 +34,10 @@ function Collectible:update(dt)
     self.yPos = self.yPos + (self.speed * dt)
 
     if self.yPos > Screen.maxHeight then
-        -- Maybe refactor to run entire loop in GameManager
         -- delete from collectibles array in GameManager
-        for index, collectible in ipairs(GameManager.collectibles) do
-            if collectible == self then
-                -- Refactor to call a function on GameManager, and not directly modify GameManager
-                table.remove(GameManager.collectibles, index)
-                GameManager:loseLife(self.damage)
-                break
-            end
-        end
+        -- Refactor to call a function on GameManager, and not directly modify GameManager
+        GameManager:removeGem(self.gemId)
+        GameManager:loseLife(self.damage)
     end
 end
 
