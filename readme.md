@@ -7,6 +7,8 @@ In progress / todo
 - Starting working on scoreManager
 
 Versions:
+0.3.1 - Refactoring
+- Made GameManager globel instead of passing it into every instance of gems
 0.3 - Adding GameManager
 - Added a game manager to handle game state
 - Refactored main and collectibles to use game manager

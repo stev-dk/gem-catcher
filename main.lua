@@ -1,5 +1,6 @@
+GameManager = require "classes.gameManager"
+
 local collectibles = require "classes.collectibles"
-local gameManager = require "classes.gameManager"
 
 local gemSpawnInterval = 3
 local gemSpawnTimer = 0
@@ -13,9 +14,9 @@ local function spawnTimer(dt)
 end
 
 local function spawnGem()
-    local Gem = collectibles.RedGem:new({gameManager = gameManager})
+    local Gem = collectibles.RedGem:new()
     Gem:load()
-    table.insert(gameManager.collectibles, Gem)
+    table.insert(GameManager.collectibles, Gem)
 end
 
 function love.load()
@@ -23,7 +24,7 @@ function love.load()
 end
 
 function love.update(dt)
-    for _, gem in ipairs(gameManager.collectibles) do
+    for _, gem in ipairs(GameManager.collectibles) do
         gem:update(dt)
     end
 
@@ -33,8 +34,8 @@ function love.update(dt)
 end
 
 function love.draw()
-    for _, gem in ipairs(gameManager.collectibles) do
+    for _, gem in ipairs(GameManager.collectibles) do
         gem:draw()
-        gameManager:draw()
+        GameManager:draw()
     end
 end
