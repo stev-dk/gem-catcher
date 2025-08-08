@@ -2,46 +2,44 @@ GameManager = require "classes.gameManager"
 
 local collectibles = require "classes.collectibles"
 
-local gemSpawnInterval = 3
-local gemSpawnTimer = 0
-local gemCounter = 0
+local collectibleSpawnInterval = 1
+local collectibleSpawnTimer = 0
 
 -- Refactor, outsource this function?
 local function spawnTimer(dt)
-    gemSpawnTimer = gemSpawnTimer + dt
-    if gemSpawnTimer > gemSpawnInterval then
-        gemSpawnTimer = gemSpawnTimer - gemSpawnInterval
+    collectibleSpawnTimer = collectibleSpawnTimer + dt
+    if collectibleSpawnTimer > collectibleSpawnInterval then
+        collectibleSpawnTimer = collectibleSpawnTimer - collectibleSpawnInterval
         return true
     end
 end
 
 -- Refactor -- outsource this function?
--- Refactor GameManager to handle the gemId ?
-local function spawnGem()
-    gemCounter = gemCounter + 1
-    local gemId = "gem"..gemCounter
-    local Gem = collectibles.RedGem:new({gemId = gemId})
-    Gem:load()
-    GameManager:addGem(Gem, gemId)
+local function spawnRedGem()
+    local RedGem = collectibles.RedGem:new()
+    RedGem:load()
+    GameManager:addCollectible(RedGem)
 end
 
 function love.load()
-    spawnGem()
+    GameManager:setScreenWidth(love.graphics.getWidth())
+    GameManager:setScreenHeight(love.graphics.getHeight())
+    spawnRedGem()
 end
 
 function love.update(dt)
-    for _, gem in pairs(GameManager.collectibles) do
-        gem:update(dt)
+    for _, collectible in pairs(GameManager.collectibles) do
+        collectible:update(dt)
     end
 
     if spawnTimer(dt) then
-        spawnGem()
+        spawnRedGem()
     end
 end
 
 function love.draw()
-    for _, gem in pairs(GameManager.collectibles) do
-        gem:draw()
-        GameManager:draw()
+    for _, collectible in pairs(GameManager.collectibles) do
+        collectible:draw()
     end
+    GameManager:draw()
 end
