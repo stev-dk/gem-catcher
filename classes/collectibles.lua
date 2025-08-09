@@ -1,11 +1,6 @@
 math.randomseed(os.time())
 math.random(); math.random(); math.random()
 
--- rename locals to lowercase?
-local Screen = {
-    minWidth = 0,
-    maxHeight = 200
-}
 local spriteCache = {}
 
 local Collectible = {}
@@ -35,13 +30,12 @@ function Collectible:load()
 
     self.image = spriteCache[self.sprite]
     self.width = self.image:getWidth()
-    self.xPos = math.random(Screen.minWidth, GameManager:getScreenWidth() - self.width)
+    self.xPos = math.random(0, GameManager:getScreenWidth() - self.width)
 end
 
 function Collectible:update(dt)
     self.yPos = self.yPos + (self.speed * dt)
 
-    -- Refactor maxHeight name... killzone? or similar
     if self.yPos > GameManager:getScreenHeight() then
         GameManager:removeCollectible(self.collectibleId)
         GameManager:loseLife(self.damage)

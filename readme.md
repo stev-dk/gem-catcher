@@ -4,10 +4,16 @@ My first game in Love2d. It's based of section 3 of Richard Allbert's udemy cour
 Learn 2D Game Development: Godot 4.3+ & C# from Scratch.
 
 In progress / todo
-- Adding a Player class, load in a image, add player movement
+- Adding collision...
 - Starting working on scoreManager (currently on pause as GameManager handels the score for now)
 
 Versions:
+0.4 - Added player class
+- Added paddle.lua with a Paddle table
+- Loading paddle sprite in memory, and drawing it on screen using global GameManager width and height to
+place the paddle.
+- Added paddle movement, restricting moving off screen using global GameManager widht and height.
+
 0.3.3 - Mostly refactoring, small optimization
 - Renamed gem to collectible to be consistent througout the code
 - Added a restart method to GameManager, and call it when the player runs out of lives.
@@ -15,7 +21,6 @@ Versions:
 - Added a width property to collectibles, to stop them from spawning outside the screen to the right.
 - Added dynamic screen dimensions, instead of hard coded values (magic numbers)
 
-Versions:
 0.3.2 - Refactoring
 - Refactored newly spanwed collectibles to have a key / id in the table, instead of an index.
 This makes it easier to delete collectibles from the table, instead of looping over the entire table

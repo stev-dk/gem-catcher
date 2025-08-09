@@ -1,4 +1,5 @@
 GameManager = require "classes.gameManager"
+Paddle = require "classes.paddle"
 
 local collectibles = require "classes.collectibles"
 
@@ -24,6 +25,7 @@ end
 function love.load()
     GameManager:setScreenWidth(love.graphics.getWidth())
     GameManager:setScreenHeight(love.graphics.getHeight())
+    Paddle:load()
     spawnRedGem()
 end
 
@@ -35,6 +37,13 @@ function love.update(dt)
     if spawnTimer(dt) then
         spawnRedGem()
     end
+
+    -- Refactor to function, movement. Maybe inside paddle.lua?
+    if love.keyboard.isDown("left") then
+        Paddle:moveLeft(dt)
+    elseif love.keyboard.isDown("right") then
+        Paddle:moveRight(dt)
+    end
 end
 
 function love.draw()
@@ -42,4 +51,5 @@ function love.draw()
         collectible:draw()
     end
     GameManager:draw()
+    Paddle:draw()
 end
