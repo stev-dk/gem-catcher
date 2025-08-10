@@ -1,10 +1,13 @@
-GameManager = require "classes.gameManager"
-Paddle = require "classes.paddle"
-
+local GameManager = require "classes.gameManager"
+local Paddle = require "classes.paddle"
 local collectibles = require "classes.collectibles"
+local collision  = require "classes.collision"
 
 local collectibleSpawnInterval = 1
 local collectibleSpawnTimer = 0
+
+local bgImage = nil
+local bgSound = nil
 
 -- Refactor, outsource this function?
 local function spawnTimer(dt)
@@ -23,9 +26,15 @@ local function spawnRedGem()
 end
 
 function love.load()
-    GameManager:setScreenWidth(love.graphics.getWidth())
-    GameManager:setScreenHeight(love.graphics.getHeight())
+    bgImage = love.graphics.newImage("assets/GameBg.png")
+    bgSound = love.audio.newSource("assets/bgm_action_5.mp3", "stream")
+    love.audio.stop()
+    love.audio.play(bgSound)
+
+    GameManager:load()
+    collision:resetCollisions()
     Paddle:load()
+    GameManager:setCollisionVars(Paddle)
     spawnRedGem()
 end
 
@@ -44,9 +53,12 @@ function love.update(dt)
     elseif love.keyboard.isDown("right") then
         Paddle:moveRight(dt)
     end
+
+    Paddle:update()
 end
 
 function love.draw()
+    love.graphics.draw(bgImage, 0, 0)
     for _, collectible in pairs(GameManager.collectibles) do
         collectible:draw()
     end

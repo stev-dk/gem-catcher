@@ -3,11 +3,25 @@ Gem Catcher
 My first game in Love2d. It's based of section 3 of Richard Allbert's udemy course
 Learn 2D Game Development: Godot 4.3+ & C# from Scratch.
 
-In progress / todo
-- Adding collision...
-- Starting working on scoreManager (currently on pause as GameManager handels the score for now)
+TODO
+- A lot of refactoring...
+- A saved highscore from current session, and perhaps a highscore that is saved from previous sessions
+
+KNOWN BUGS
+- If two collectibles are picked up to soon after each other, the second wont play a pickup sound, as the first
+one is still playing. Same applies to explode sounds.
 
 Versions:
+0.5 - Added collision
+- Removed the use of globals in the game. Now even the GameManager is a local and is required where needed
+- Added simple collision, check the entire outline of the collectible (as a square), and not its actual footprint
+- Added background image and music
+- Added collect sound
+- Added explosion sound when a collectible is not picked up
+- Added score
+- Slightly refined restart and load methods
+- Removed ScoreManager, as GameManager handles this
+
 0.4 - Added player class
 - Added paddle.lua with a Paddle table
 - Loading paddle sprite in memory, and drawing it on screen using global GameManager width and height to
