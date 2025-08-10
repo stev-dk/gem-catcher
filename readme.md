@@ -5,13 +5,19 @@ Learn 2D Game Development: Godot 4.3+ & C# from Scratch.
 
 TODO
 - A lot of refactoring...
-- A saved highscore from current session, and perhaps a highscore that is saved from previous sessions
+- Adjust hitboxen to better resemble the collectible sprite
+- Persist highscore from current session, and perhaps persist highscore from previous sessions in a file.
 
 KNOWN BUGS
-- If two collectibles are picked up to soon after each other, the second wont play a pickup sound, as the first
-one is still playing. Same applies to explode sounds.
+- Hitbox slightly too big
 
 Versions:
+0.5.1 - Minor fixes
+- Fixed sound not playing bug
+- Fixed a bug when restarting two collectibles would drop at the same time
+- Fixed background music looping
+- Minor refactoring
+
 0.5 - Added collision
 - Removed the use of globals in the game. Now even the GameManager is a local and is required where needed
 - Added simple collision, check the entire outline of the collectible (as a square), and not its actual footprint

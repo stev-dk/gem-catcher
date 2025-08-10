@@ -12,7 +12,7 @@ Collectible.__index = Collectible
 
 function Collectible:new(o)
     o = o or {}
-    o.xPos = o.xPos or 100
+    o.xPos = o.xPos or 0
     o.yPos = o.yPos or -100
     o.width = o.width or 0
     o.height = o.height or 0
@@ -58,40 +58,38 @@ function Collectible:update(dt)
     if self.yPos > GameManager.collisionStart - self.height and self.yPos < GameManager.collisionEnd then
         self.canCollide = true
         Collision:addCollectibleCollision(self)
-    else
+    elseif self.canCollide then
         self.canCollide = false
         Collision:removeCollectibleCollision(self.collectibleId)
     end
 
     -- CHECK FOR KILLZONE
     if self.yPos > GameManager:getScreenHeight() then
-        love.audio.play(soundCache[self.explodeSound])
-        GameManager:removeCollectible(self.collectibleId)
-        GameManager:loseLife(self.damage)
+        self:onKillzoneEntered()
     end
 end
 
 function Collectible:draw()
     love.graphics.draw(self.image, self.xPos, self.yPos, math.deg(0), 1, 1)
-
-    -- DEBUG REMOVE LATER
-    local canCollideString = "false"
-    if self.canCollide then
-        canCollideString = "true"
-    end
-
-    love.graphics.print(string.format("Can collide: %s", canCollideString), self.xPos - 25, self.yPos - 30)
-    love.graphics.print(string.format("collisionZoneStart: %d", GameManager.collisionStart - self.height), self.xPos - 25, self.yPos - 40)
-    love.graphics.print(string.format("collisionZoneEnd: %d", GameManager.collisionEnd), self.xPos - 25, self.yPos - 50)
-    -- DEBUG END
 end
 
 function Collectible:updateId(newCollectibleId)
     self.collectibleId = newCollectibleId
 end
 
-function Collectible:playCollectSound()
+function Collectible:onCollected()
+    love.audio.stop(soundCache[self.collectSound])
     love.audio.play(soundCache[self.collectSound])
+    GameManager:removeCollectible(self.collectibleId)
+    GameManager:scorePoint(self.points)
+    Collision:removeCollectibleCollision(self.collectibleId)
+end
+
+function Collectible:onKillzoneEntered()
+    love.audio.stop(soundCache[self.explodeSound])
+    love.audio.play(soundCache[self.explodeSound])
+    GameManager:removeCollectible(self.collectibleId)
+    GameManager:loseLife(self.damage)
 end
 
 local RedGem = setmetatable({}, {__index = Collectible})

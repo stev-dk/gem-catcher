@@ -14,13 +14,6 @@ Paddle.__index = Paddle
 
 function Paddle:draw()
     love.graphics.draw(self.sprite, self.xPos, self.yPos, math.deg(0), 1, 1)
-
-    -- DEBUG
-    local offset = -25
-    for _,collision in pairs(Collision.collectibles) do
-        love.graphics.print(collision.collectibleId, self.xPos, self.yPos + offset)
-        offset = offset - 15
-    end
 end
 
 function Paddle:load()
@@ -43,14 +36,19 @@ function Paddle:moveRight(dt)
     end
 end
 
+function Paddle:movement(dt)
+    if love.keyboard.isDown("left") then
+        Paddle:moveLeft(dt)
+    elseif love.keyboard.isDown("right") then
+        Paddle:moveRight(dt)
+    end
+end
+
+-- Move to Collision ??
 function Paddle:update()
     for _,collision in pairs(Collision.collectibles) do
-
         if collision.xPos + collision.width > self.xPos and collision.xPos < self.xPos + self.width then
-            collision:playCollectSound()
-            GameManager:scorePoint(collision.points)
-            GameManager:removeCollectible(collision.collectibleId)
-            Collision:removeCollectibleCollision(collision.collectibleId)
+            collision:onCollected()
         end
     end
 end
