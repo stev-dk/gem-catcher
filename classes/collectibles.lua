@@ -1,4 +1,3 @@
-local GameManager = require "classes.gameManager"
 local Collision = require "classes.collision"
 
 math.randomseed(os.time())
@@ -25,6 +24,7 @@ function Collectible:new(o)
     o.collectSound = nil
     o.explodeSound = nil
     o.collectibleId = o.collectibleId or "collectible0"
+    o.gameManager = o.gameManager or nil
     setmetatable(o, self)
     self.__index = self
     return o
@@ -47,7 +47,7 @@ function Collectible:load()
     self.image = spriteCache[self.sprite]
     self.width = self.image:getWidth()
     self.height = self.image:getHeight()
-    self.xPos = math.random(0, GameManager:getScreenWidth() - self.width)
+    self.xPos = math.random(0, self.gameManager:getScreenWidth() - self.width)
 end
 
 function Collectible:update(dt)
@@ -55,7 +55,7 @@ function Collectible:update(dt)
     self.yPos = self.yPos + (self.speed * dt)
 
     -- CHECK FOR COLLISION ZONE
-    if self.yPos > GameManager.collisionStart - self.height and self.yPos < GameManager.collisionEnd then
+    if self.yPos > self.gameManager.collisionStart - self.height and self.yPos < self.gameManager.collisionEnd then
         self.canCollide = true
         Collision:addCollectibleCollision(self)
     elseif self.canCollide then
@@ -64,7 +64,7 @@ function Collectible:update(dt)
     end
 
     -- CHECK FOR KILLZONE
-    if self.yPos > GameManager:getScreenHeight() then
+    if self.yPos > self.gameManager:getScreenHeight() then
         self:onKillzoneEntered()
     end
 end
@@ -80,16 +80,16 @@ end
 function Collectible:onCollected()
     love.audio.stop(soundCache[self.collectSound])
     love.audio.play(soundCache[self.collectSound])
-    GameManager:removeCollectible(self.collectibleId)
-    GameManager:scorePoint(self.points)
+    self.gameManager:removeCollectible(self.collectibleId)
+    self.gameManager:scorePoint(self.points)
     Collision:removeCollectibleCollision(self.collectibleId)
 end
 
 function Collectible:onKillzoneEntered()
     love.audio.stop(soundCache[self.explodeSound])
     love.audio.play(soundCache[self.explodeSound])
-    GameManager:removeCollectible(self.collectibleId)
-    GameManager:loseLife(self.damage)
+    self.gameManager:removeCollectible(self.collectibleId)
+    self.gameManager:loseLife(self.damage)
 end
 
 local RedGem = setmetatable({}, {__index = Collectible})

@@ -4,7 +4,8 @@ My first game in Love2d. It's based of section 3 of Richard Allbert's udemy cour
 Learn 2D Game Development: Godot 4.3+ & C# from Scratch.
 
 TODO
-- A lot of refactoring...
+- A lot of refactoring... Cleaning up public and local variables
+- Clean up UI. Add a font style and text size and better padding.
 - Adjust hitboxen to better resemble the collectible sprite
 - Persist highscore from current session, and perhaps persist highscore from previous sessions in a file.
 
@@ -12,6 +13,12 @@ KNOWN BUGS
 - Hitbox slightly too big
 
 Versions:
+0.5.2 - More refactoring
+- Cleaned up main.lua nicely
+- Moved logic to GameManager
+- Rearranged methods in GameManager to alphabetic order
+- Started to clear out public methods into local functions, and public variables into local variables
+
 0.5.1 - Minor fixes
 - Fixed sound not playing bug
 - Fixed a bug when restarting two collectibles would drop at the same time
